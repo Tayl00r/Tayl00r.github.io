@@ -310,39 +310,9 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <pre><code>OutOfMemoryError，说的是java.lang.OutOfMemoryError，是JDK里自带的异常，顾名思义，说的就是内存溢出，当我们的系统内存严重不足的时候就会抛出这个异常(PS:注意这是一个Error，不是一个Exception，所以当我们要catch异常的时候要注意哦)，这个异常说常见也常见，说不常见其实也见得不多，不过作为Java程序员至少应该都听过吧,如果你对jvm不是很熟，或者对OutOfMemoryError这个异常了解不是很深的话，这篇文章肯定还是可以给你带来一些惊喜的，通过这篇文章你至少可以了解到如下几点：
-+&lt;!-- more --&gt;
-</code></pre><p>*<br>OutOfMemoryError一定会被加载吗</p>
-<p>*<br>什么时候抛出OutOfMemoryError</p>
-<p>*<br>会创建无数OutOfMemoryError实例吗</p>
-<p>*<br>为什么大部分OutOfMemoryError异常是无堆栈的</p>
-<p>*<br>我们如何去分析这样的异常</p>
-<p>OutOfMemoryError类加载</p>
-<p>既然要说OutOfMemoryError，那就得从这个类的加载说起来，那这个类什么时候被加载呢？你或许会不假思索地说，根据java类的延迟加载机制，这个类一般情况下不会被加载，除非当我们抛出OutOfMemoryError这个异常的时候才会第一次被加载，如果我们的系统一直不抛出这个异常，那这个类将一直不会被加载。说起来好像挺对，不过我这里首先要纠正这个说法，要明确的告诉你这个类在jvm启动的时候就已经被加载了，不信你就执行 <code>java -verbose:class -version</code> 打印JDK版本看看，看是否有OutOfMemoryError这个类被加载，再输出里你将能找到下面的内容：</p>
-<p>``<br>[Loaded java.lang.OutOfMemoryError from /Library/Java/JavaVirtualMachines/jdk1.7.0_79.jdk/Contents/Home/jre/lib/rt.jar]<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line">这意味着这个类其实在vm启动的时候就已经被加载了，那JVM里到底在哪里进行加载的呢，且看下面的方法:</div><div class="line"></div><div class="line">``</div><div class="line">bool universe_post_init() &#123;</div><div class="line">...</div><div class="line">// Setup preallocated OutOfMemoryError errors</div><div class="line">    k = SystemDictionary::resolve_or_fail(vmSymbols::java_lang_OutOfMemoryError(), true, CHECK_false);</div><div class="line">    k_h = instanceKlassHandle(THREAD, k);</div><div class="line">    Universe::_out_of_memory_error_java_heap = k_h-&gt;allocate_instance(CHECK_false);</div><div class="line">    Universe::_out_of_memory_error_metaspace = k_h-&gt;allocate_instance(CHECK_false);</div><div class="line">    Universe::_out_of_memory_error_class_metaspace = k_h-&gt;allocate_instance(CHECK_false);</div><div class="line">    Universe::_out_of_memory_error_array_size = k_h-&gt;allocate_instance(CHECK_false);</div><div class="line">    Universe::_out_of_memory_error_gc_overhead_limit =</div><div class="line">      k_h-&gt;allocate_instance(CHECK_false);</div><div class="line">    Universe::_out_of_memory_error_realloc_objects = k_h-&gt;allocate_instance(CHECK_false);</div><div class="line">    </div><div class="line">    </div><div class="line">...</div><div class="line">if (!DumpSharedSpaces) &#123;</div><div class="line">    // These are the only Java fields that are currently set during shared space dumping.</div><div class="line">    // We prefer to not handle this generally, so we always reinitialize these detail messages.</div><div class="line">    Handle msg = java_lang_String::create_from_str(&quot;Java heap space&quot;, CHECK_false);</div><div class="line">    java_lang_Throwable::set_message(Universe::_out_of_memory_error_java_heap, msg());</div><div class="line">    msg = java_lang_String::create_from_str(&quot;Metaspace&quot;, CHECK_false);</div><div class="line">    java_lang_Throwable::set_message(Universe::_out_of_memory_error_metaspace, msg());</div><div class="line">    msg = java_lang_String::create_from_str(&quot;Compressed class space&quot;, CHECK_false);</div><div class="line">    java_lang_Throwable::set_message(Universe::_out_of_memory_error_class_metaspace, msg());</div><div class="line">    msg = java_lang_String::create_from_str(&quot;Requested array size exceeds VM limit&quot;, CHECK_false);</div><div class="line">    java_lang_Throwable::set_message(Universe::_out_of_memory_error_array_size, msg());</div><div class="line">    msg = java_lang_String::create_from_str(&quot;GC overhead limit exceeded&quot;, CHECK_false);</div><div class="line">    java_lang_Throwable::set_message(Universe::_out_of_memory_error_gc_overhead_limit, msg());</div><div class="line">    msg = java_lang_String::create_from_str(&quot;Java heap space: failed reallocation of scalar replaced objects&quot;, CHECK_false);</div><div class="line">    java_lang_Throwable::set_message(Universe::_out_of_memory_error_realloc_objects, msg());</div><div class="line">    msg = java_lang_String::create_from_str(&quot;/ by zero&quot;, CHECK_false);</div><div class="line">    java_lang_Throwable::set_message(Universe::_arithmetic_exception_instance, msg());</div><div class="line">    // Setup the array of errors that have preallocated backtrace</div><div class="line">    k = Universe::_out_of_memory_error_java_heap-&gt;klass();</div><div class="line">    assert(k-&gt;name() == vmSymbols::java_lang_OutOfMemoryError(), &quot;should be out of memory error&quot;);</div><div class="line">    k_h = instanceKlassHandle(THREAD, k);</div><div class="line">    int len = (StackTraceInThrowable) ? (int)PreallocatedOutOfMemoryErrorCount : 0;</div><div class="line">    Universe::_preallocated_out_of_memory_error_array = oopFactory::new_objArray(k_h(), len, CHECK_false);</div><div class="line">    for (int i=0; i&lt;len; i++) &#123;</div><div class="line">      oop err = k_h-&gt;allocate_instance(CHECK_false);</div><div class="line">      Handle err_h = Handle(THREAD, err);</div><div class="line">      java_lang_Throwable::allocate_backtrace(err_h, CHECK_false);</div><div class="line">      Universe::preallocated_out_of_memory_errors()-&gt;obj_at_put(i, err_h());</div><div class="line">    &#125;</div><div class="line">    Universe::_preallocated_out_of_memory_error_avail_count = (jint)len;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>上面的代码其实就是在vm启动过程中加载了OutOfMemoryError这个类，并且创建了好几个OutOfMemoryError对象，每个OutOfMemoryError对象代表了一种内存溢出的场景，比如说 <code>Java heap space</code> 不足导致的OutOfMemoryError，抑或 <code>Metaspace</code> 不足导致的OutOfMemoryError，上面的代码来源于JDK8，所以能看到metaspace的内容，如果是JDK8之前，你将看到Perm的OutOfMemoryError，不过本文metaspace不是重点，所以不展开讨论，如果大家有兴趣，可以专门写一篇文章来介绍metsapce来龙去脉，说来这个坑填起来还挺大的。</p>
-<p>能通过agent拦截到这个类加载吗</p>
-<p>熟悉字节码增强的人，可能会条件反射地想到是否可以拦截到这个类的加载呢，这样我们就可以做一些譬如内存溢出的监控啥的，哈哈，我要告诉你的是 <code>NO WAY</code> ，因为通过agent的方式来监听类加载过程是在vm初始化完成之后才开始的，而这个类的加载是在vm初始化过程中，因此不可能拦截到这个类的加载，于此类似的还有 <code>java.lang.Object</code>,<code>java.lang.Class</code>等。</p>
-<p>为什么要在vm启动过程中加载这个类</p>
-<p>这个问题或许看了后面的内容你会有所体会，先卖个关子。包括为什么要预先创建这几个实例对象后面也会解释。</p>
-<p>何时抛出OutOfMemoryError</p>
-<p>要抛出OutOfMemoryError，那肯定是有地方需要进行内存分配，可能是heap里，也可能是metsapce里（如果是在JDK8之前的会是Perm里），不同地方的分配，其策略也不一样，简单来说就是尝试分配，实在没办法就gc，gc还是不能分配就抛出异常。</p>
-<p>不过还是以Heap里的分配为例说一下具体的过程：</p>
-<p>正确情况下对象创建需要分配的内存是来自于Heap的Eden区域里，当Eden内存不够用的时候，某些情况下会尝试到Old里进行分配(比如说要分配的内存很大)，如果还是没有分配成功，于是会触发一次ygc的动作，而ygc完成之后我们会再次尝试分配，如果仍不足以分配此时的内存，那会接着做一次full gc(不过此时的soft reference不会被强制回收)，将老生代也回收一下，接着再做一次分配，仍然不够分配那会做一次强制将soft reference也回收的full gc，如果还是不能分配，那这个时候就不得不抛出OutOfMemoryError了。这就是Heap里分配内存抛出OutOfMemoryError的具体过程了。</p>
-<p>OutOfMemoryError对象可能会很多吗</p>
-<p>想象有这么一种场景，我们的代码写得足够烂，并且存在内存泄漏，这意味着系统跑到一定程度之后，只要我们创建对象要分配内存的时候就会进行gc，但是gc没啥效果，进而抛出OutOfMemoryError的异常，那意味着每发生此类情况就应该创建一个OutOfMemoryError对象，并且抛出来，也就是说我们会看到一个带有堆栈的OutOfMemoryError异常被抛出，那事实是如此吗？如果真是如此，那为什么在VM启动的时候会创建那几个OutOfMemoryError对象呢？</p>
-<p>抛出异常的java代码位置需要我们关心吗</p>
-<p>这个问题或许你仔细想想就清楚了，如果没想清楚，请在这里停留一分钟仔细想想再往后面看。</p>
-<p>抛出OutOfMemoryError异常的java方法其实只是临门一脚而已，导致内存泄漏的不一定就是这个方法，当然也不排除可能是这个方法，不过这种情况的可能性真的非常小。所以你大可不必去关心抛出这个异常的堆栈。</p>
-<p>既然可以不关心其异常堆栈，那意味着这个异常其实没必要每次都创建一个不一样的了，因为不需要堆栈的话，其他的东西都可以完全相同，这样一来回到我们前面提到的那个问题， <code>为什么要在vm启动过程中加载这个类</code> ，或许你已经有答案了，在vm启动过程中我们把类加载起来，并创建几个没有堆栈的对象缓存起来，只需要设置下不同的提示信息即可，当需要抛出特定类型的OutOfMemoryError异常的时候，就直接拿出缓存里的这几个对象就可以了。</p>
-<p>所以OutOfMemoryError的对象其实并不会太多，哪怕你代码写得再烂，当然，如果你代码里要不断 <code>new OutOfMemoryError()</code> ，那我就无话可说啦。</p>
-<p>为什么我们有时候还是可以看到有堆栈的OutOfMemoryError</p>
-<p>如果都是用jvm启动的时候创建的那几个OutOfMemoryError对象，那不应该再出现有堆栈的OutOfMemoryError异常，但是实际上我们偶尔还是能看到有堆栈的异常，如果你细心点的话，可能会总结出一个规律，发现最多出现4次有堆栈的OutOfMemoryError异常，当4次过后，你都将看到无堆栈的OutOfMemoryError异常。</p>
-<p>这个其实在我们上面贴的代码里也有体现，最后有一个for循环，这个循环里会创建几个OutOfMemoryError对象，如果我们将 <code>StackTraceInThrowable</code> 设置为true的话(默认就是true的)，意味着我们抛出来的异常正确情况下都将是有堆栈的，那根据 <code>PreallocatedOutOfMemoryErrorCount</code> 这个参数来决定预先创建几个OutOfMemoryError异常对象，但是这个参数除非在debug版本下可以被设置之外，正常release出来的版本其实是无法设置这个参数的，它会是一个常量，值为4，因此在jvm启动的时候会预先创建4个OutOfMemoryError异常对象，但是这几个异常对象的堆栈，是可以动态设置的，比如说某个地方要抛出OutOfMemoryError异常了，于是先从预存的OutOfMemoryError里取出一个（其他是预存的对象还有），将此时的堆栈填上，然后抛出来，并且这个对象的使用是一次性的，也就是这个对象被抛出之后将不会再次被利用，直到预设的这几个OutOfMemoryError对象被用完了，那接下来抛出的异常都将是一开始缓存的那几个无栈的OutOfMemoryError对象。</p>
-<p>这就是我们看到的最多出现4次有堆栈的OutOfMemoryError异常及大部分情况下都将看到没有堆栈的OutOfMemoryError对象的原因。</p>
-<p>如何分析OutOfMemoryError异常</p>
-<p>既然看堆栈也没什么意义，那只能从提示上入手了，我们看到这类异常，首先要确定的到底是哪块内存何种情况导致的内存溢出，比如说是Perm导致的，那抛出来的异常信息里会带有 <code>Perm</code> 的关键信息，那我们应该重点看Perm的大小，以及Perm里的内容；如果是Heap的，那我们就必须做内存Dump，然后分析为什么会发生这样的情况，内存里到底存了什么对象，至于内存分析的最佳的分析工具自然是MAT啦，不了解的请google之。</p>
-
+              <pre><code>OutOfMemoryError，说的是java.lang.OutOfMemoryError，是JDK里自带的异常，顾名思义，说的就是内存溢出，当我们的系统内存严重不足的时候就会抛出这个异常(PS:注意这是一个Error，不是一个Exception，所以当我们要catch异常的时候要注意哦)，这个异常说常见也常见，说不常见其实也见得不多，不过作为Java程序员至少应该都听过吧,如果你对jvm不是很熟，或者对OutOfMemoryError这个异常了解不是很深的话，这篇文章肯定还是可以给你带来一些惊喜的，通过这篇文章你至少可以了解到如下几点：
+</code></pre><p>+
+          
       
     </div>
     
@@ -351,6 +321,10 @@
       
 
       
+      
+        <p class="article-more-link">
+          <a href="/2016/12/14/OutOfMemoryError完全解读/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
