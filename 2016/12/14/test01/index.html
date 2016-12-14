@@ -15,16 +15,16 @@
 
 
 
-<meta name="description" content="啦啦啦啦啦啦啦啦啦啦了">
+<meta name="description" content="OutOfMemoryError，说的是java.lang.OutOfMemoryError，是JDK里自带的异常，顾名思义，说的就是内存溢出，当我们的系统内存严重不足的时候就会抛出这个异常(PS:注意这是一个Error，不是一个Exception，所以当我们要catch异常的时候要注意哦)，这个异常说常见也常见，说不常见其实也见得不多，不过作为Java程序员至少应该都听过">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OutOfMemoryError异常分析">
 <meta property="og:url" content="http://Tayl00r.github.io/2016/12/14/test01/index.html">
 <meta property="og:site_name" content="Tayl0r">
-<meta property="og:description" content="啦啦啦啦啦啦啦啦啦啦了">
-<meta property="og:updated_time" content="2016-12-14T06:51:32.000Z">
+<meta property="og:description" content="OutOfMemoryError，说的是java.lang.OutOfMemoryError，是JDK里自带的异常，顾名思义，说的就是内存溢出，当我们的系统内存严重不足的时候就会抛出这个异常(PS:注意这是一个Error，不是一个Exception，所以当我们要catch异常的时候要注意哦)，这个异常说常见也常见，说不常见其实也见得不多，不过作为Java程序员至少应该都听过">
+<meta property="og:updated_time" content="2016-12-14T07:02:15.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OutOfMemoryError异常分析">
-<meta name="twitter:description" content="啦啦啦啦啦啦啦啦啦啦了">
+<meta name="twitter:description" content="OutOfMemoryError，说的是java.lang.OutOfMemoryError，是JDK里自带的异常，顾名思义，说的就是内存溢出，当我们的系统内存严重不足的时候就会抛出这个异常(PS:注意这是一个Error，不是一个Exception，所以当我们要catch异常的时候要注意哦)，这个异常说常见也常见，说不常见其实也见得不多，不过作为Java程序员至少应该都听过">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -138,13 +138,13 @@
                 <div class="tips-box hide">
                     <div class="tips-arrow"></div>
                     <ul class="tips-inner">
-                        <li>菜单</li>
-                        <li>标签</li>
+                        <li>Menu</li>
+                        <li>Tags</li>
                         
-                        <li>友情链接</li>
+                        <li>Friends</li>
                         
                         
-                        <li>关于我</li>
+                        <li>About Me</li>
                         
                     </ul>
                 </div>
@@ -262,7 +262,7 @@
             </nav>
         </header>                
     </div>
-    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
       <div class="body-wrap"><article id="post-test01" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -304,8 +304,22 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>啦啦啦啦啦啦啦啦啦啦了<a id="more"></a></p>
-<h2 id="Quick-Star"><a href="#Quick-Star" class="headerlink" title="Quick Star"></a>Quick Star</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
+        <p>OutOfMemoryError，说的是java.lang.OutOfMemoryError，是JDK里自带的异常，顾名思义，说的就是内存溢出，当我们的系统内存严重不足的时候就会抛出这个异常(PS:注意这是一个Error，不是一个Exception，所以当我们要catch异常的时候要注意哦)，这个异常说常见也常见，说不常见其实也见得不多，不过作为Java程序员至少应该都听过<a id="more"></a></p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><pre><code>如果你对jvm不是很熟，或者对OutOfMemoryError这个异常了解不是很深的话，这篇文章肯定还是可以给你带来一些惊喜的，通过这篇文章你至少可以了解到如下几点：
+</code></pre><ul>
+<li><p>OutOfMemoryError一定会被加载吗</p>
+</li>
+<li><p>什么时候抛出OutOfMemoryError</p>
+</li>
+<li><p>会创建无数OutOfMemoryError实例吗</p>
+</li>
+<li><p>为什么大部分OutOfMemoryError异常是无堆栈的</p>
+</li>
+<li><p>我们如何去分析这样的异常</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[Loaded java.lang.OutOfMemoryError from /Library/Java/JavaVirtualMachines/jdk1.7.0_79.jdk/Contents/Home/jre/lib/rt.jar]</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
 <h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
@@ -321,17 +335,17 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2016/12/14/test01/">OutOfMemoryError异常分析</a></p>
-        <p><span>文章作者:</span><a href="/" title="回到主页">Tayl0r。</a></p>
-        <p><span>发布时间:</span>2016-12-14, 14:20:01</p>
-        <p><span>最后更新:</span>2016-12-14, 14:51:32</p>
+        <p><span>Title:</span><a href="/2016/12/14/test01/">OutOfMemoryError异常分析</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage">Tayl0r。</a></p>
+        <p><span>Created:</span>2016-12-14, 14:20:01</p>
+        <p><span>Updated:</span>2016-12-14, 15:02:15</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2016/12/14/test01/" title="OutOfMemoryError异常分析">http://Tayl00r.github.io/2016/12/14/test01/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://Tayl00r.github.io/2016/12/14/test01/　　作者: Tayl0r。" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>Full URL:</span><a class="post-url" href="/2016/12/14/test01/" title="OutOfMemoryError异常分析">http://Tayl00r.github.io/2016/12/14/test01/</a>
+            <span class="copy-path" data-clipboard-text="From http://Tayl00r.github.io/2016/12/14/test01/　　By Tayl0r。" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
-            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
         </p>
     </div>
 
@@ -352,9 +366,9 @@
 </article>
 
     <div id="toc" class="toc-article">
-        <strong class="toc-title">文章目录</strong>
+        <strong class="toc-title">Contents</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Star"><span class="toc-number">1.</span> <span class="toc-text">Quick Star</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -368,10 +382,10 @@
         }
     </style>
 
-    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
 
     <script>
-        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
     </script>
 
 
@@ -429,13 +443,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
         
 
-        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2016/12/14/hello-world/" title="下一篇: Hello World">
+            <a href="/2016/12/14/hello-world/" title="Next: Hello World">
                 <i class="fa fa-angle-right"></i>
             </a>
         
@@ -458,14 +472,14 @@
                 2016 Tayl0r。
             </div>
             <div class="footer-right">
-                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
             </div>
         </div>
         
             <div class="visit">
                 
                     <span id="busuanzi_container_site_pv" style='display:none'>
-                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
                         </span>
                     </span>
                 
@@ -474,7 +488,7 @@
                 
                 
                     <span id="busuanzi_container_page_pv" style='display:none'>
-                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
                         </span>
                     </span>
                 
@@ -507,9 +521,9 @@
 
 
 <div class="scroll" id="scroll">
-    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
-    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
-    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
 </div>
 <script>
     // Open in New Window
