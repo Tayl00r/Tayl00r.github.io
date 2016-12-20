@@ -310,7 +310,7 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h2 id="控件-Control"><a href="#控件-Control" class="headerlink" title="控件 Control"></a>控件 Control</h2><pre><code>文本、 输入框、  按钮 、 多选钮、 单选钮
+              <h2 id="控件-Control"><a href="#控件-Control" class="headerlink" title="控件 Control"></a>控件 Control</h2><pre><code>文本、 输入框、  按钮 、 多选钮、 单选钮
 </code></pre><p>###控件的继承结构：</p>
 <pre><code>View 界面控件父类
    |-- TextView
@@ -318,62 +318,8 @@
    |-- Button
    |-- CheckBox
    |-- Radio
-</code></pre><p>###Activity<br>      <em>活动，理解成窗口（显示界面）
-      </em>一般情况下，一个窗口只显示一个界面<br>      <em>启动窗口时，系统自动创建窗口对象，并调用对象的onCreate()方法
-     </em>在onCreate()方法中，设置在窗口中显示的界面<br>     setContentView();设置窗口显示哪一个界面（指定显示界面）；<br>      *启动另一个窗口：<br>          1）写一张纸条：<br>                    安卓系统，我想启动B窗口<br>                    Intent intent = new Intent(当前窗口对象，目标窗口类);<br>          2）把纸条传递给系统底层</p>
-<p>###监听器</p>
-<p>###布局</p>
-<pre><code>*       相对布局 RelativeLayout
-*       线性布局 LinearLayout
-*       表格布局 TableLayout
-*       帧布局 FrameLayout
-*       网格布局 GridLayout
-</code></pre><p>###相对布局  RelativeLayout<br>          –  * 停靠在父控件边界<br>                    alignParentTop<br>                    alignParentRight<br>                    alignParentBottom<br>                    alignParentLeft </p>
-<pre><code>* 相对父控件居中
-     centerHorizental 水平居中
-     centerVertal        垂直居中
-     centerInParent    正中间
-
-* 停靠周围控件边界
-     above
-     below
-     toLeftOf
-     toRightOf
-
- * 对齐周围控件边界
-     alignTop
-     alignRight
-     alignBottom
-     alignLeft
-     alignBaseLine
-</code></pre><p>###线性布局  LinerLayout<br>     <em>水平线性布局<br>          orientation=”horizental”
-     </em>垂直线性布局<br>          orientation=”vertical”<br>     <em>weight （ 比重 ）<br>               按比例分配剩余的可用空间
-               </em>）垂直布局中<br>     ·                   height=”0dp”<br>               <em>）水平布局中<br>                          width=”0dp”
-     </em>layout_gravity （重力引力）<br>                   top<br>                    right<br>                    bottom<br>                    left<br>                    center<br>                    centerHorizental<br>                    centerVertical</p>
-<p>###表格布局 TableLayout<br><em><tablerow>表格的行
-</tablerow></em>strechColumns<br>     设置拉伸的列<br>     strechColumns=”0”</p>
-<p>###帧布局 FrameLayout<br><em>控件叠加在一起
-</em>主视图控件铺满窗口，在上面可以叠加漂浮其他视图控件<br>*layout_gravity（重力引力）<br>     top<br>     right<br>     bottom<br>     center<br>     centerHorizental<br>     centerVertical</p>
-<pre><code>两个引力 right | centerVertical
-</code></pre><p>###帧布局与窗口的融合（merge）<br><em>）窗口Activity  中存在一个默认的帧布局
-</em>）可以将FrameLayout界面中的控件，融合到窗口的帧布局中<br>*）<merge> 代替 <framelayout></framelayout></merge></p>
-<p>###网格布局 GridLayout</p>
-<ul>
-<li><p>列数量<br>   columnCount=”4”<br>   指定控件放置的列 column=”3”</p>
-</li>
-<li><p>跨行跨列<br>   rowSpan=”2”   columnSpan=”2”</p>
-</li>
-<li><p>gravity   </p>
-<pre><code>fill                  向四周的引力  
-fill_horizental  向左右的引力
-fill_vertical      向上下的引力
-</code></pre></li>
-</ul>
-<p>*<sapce> 空白控件</sapce></p>
-<p>航空订票<br><em>登录
-</em>选单<br><em>营业网点查询
-</em>航班查询</p>
-
+</code></pre>
+          
       
     </div> 
     
@@ -386,6 +332,10 @@ fill_vertical      向上下的引力
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2016/12/21/android界面控件/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -589,12 +539,8 @@ fill_vertical      向上下的引力
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h2 id="什么是设计模式"><a href="#什么是设计模式" class="headerlink" title="什么是设计模式"></a>什么是设计模式</h2><p>每一个模式描述了一个在我们周围不断重复发生的问题，以及该问题的解决方案的核心。（提供问题的相关解决方案）</p>
-<p><strong>模式名称：</strong>用一两个词来描述模式的问题、解决方案和效果。</p>
-<p><strong>问题：</strong>描述在何时使用设计模式</p>
-<p><strong>解决方案：</strong>描述了设计的组成部分，之间的相互关系、各自职责和协作方式。</p>
-<p><strong>效果：</strong>模式的应用效果以及使用模式应该权衡的问题。</p>
-
+              <h2 id="什么是设计模式"><a href="#什么是设计模式" class="headerlink" title="什么是设计模式"></a>什么是设计模式</h2><p>每一个模式描述了一个在我们周围不断重复发生的问题，以及该问题的解决方案的核心。（提供问题的相关解决方案）<br>
+          
       
     </div> 
     
@@ -607,6 +553,10 @@ fill_vertical      向上下的引力
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2016/12/14/设计模式个人理解/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
