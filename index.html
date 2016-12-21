@@ -464,7 +464,8 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <p><em>线程之间的共享变量存储在主内存（main memory）中，每个线程都有一个私有的本地内存（local memory），本地内存中存储了该线程以读/写共享变量的副本。</em><br>
+              <h3 id="Java-内存模型"><a href="#Java-内存模型" class="headerlink" title="Java 内存模型"></a>Java 内存模型</h3><p><em>线程之间的共享变量存储在主内存（main memory）中，每个线程都有一个私有的本地内存（local memory），本地内存中存储了该线程以读/写共享变量的副本。</em></p>
+<p>本地内存是JMM（Java内存模型）的一个抽象概念，并不真实存在。它涵盖了缓存，写 缓冲区，寄存器以及其 他的硬件和编译器优化。
           
       
     </div> 
@@ -474,6 +475,10 @@
       
 
       
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+    </div>
+
       
         <p class="article-more-link">
           <a href="/2016/12/14/多线程生成的原因（Java内存模型与i++操作解析）/#more">more >></a>

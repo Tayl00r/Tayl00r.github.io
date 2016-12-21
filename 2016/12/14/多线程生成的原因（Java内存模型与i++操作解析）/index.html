@@ -15,16 +15,21 @@
 
 
 
-<meta name="description" content="线程之间的共享变量存储在主内存（main memory）中，每个线程都有一个私有的本地内存（local memory），本地内存中存储了该线程以读/写共享变量的副本。">
+<meta name="description" content="Java 内存模型线程之间的共享变量存储在主内存（main memory）中，每个线程都有一个私有的本地内存（local memory），本地内存中存储了该线程以读/写共享变量的副本。
+本地内存是JMM（Java内存模型）的一个抽象概念，并不真实存在。它涵盖了缓存，写 缓冲区，寄存器以及其 他的硬件和编译器优化。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="多线程生成的原因（Java内存模型与i++操作解析）">
 <meta property="og:url" content="http://Tayl00r.github.io/2016/12/14/多线程生成的原因（Java内存模型与i++操作解析）/index.html">
 <meta property="og:site_name" content="Tayl0r">
-<meta property="og:description" content="线程之间的共享变量存储在主内存（main memory）中，每个线程都有一个私有的本地内存（local memory），本地内存中存储了该线程以读/写共享变量的副本。">
-<meta property="og:updated_time" content="2016-12-21T08:29:12.000Z">
+<meta property="og:description" content="Java 内存模型线程之间的共享变量存储在主内存（main memory）中，每个线程都有一个私有的本地内存（local memory），本地内存中存储了该线程以读/写共享变量的副本。
+本地内存是JMM（Java内存模型）的一个抽象概念，并不真实存在。它涵盖了缓存，写 缓冲区，寄存器以及其 他的硬件和编译器优化。">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/9150767/13448138/81f142d6-e05b-11e5-8534-c2f383b5497d.pnghttps://cloud.githubusercontent.com/assets/9150767/13448138/81f142d6-e05b-11e5-8534-c2f383b5497d.png">
+<meta property="og:updated_time" content="2016-12-21T08:37:49.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="多线程生成的原因（Java内存模型与i++操作解析）">
-<meta name="twitter:description" content="线程之间的共享变量存储在主内存（main memory）中，每个线程都有一个私有的本地内存（local memory），本地内存中存储了该线程以读/写共享变量的副本。">
+<meta name="twitter:description" content="Java 内存模型线程之间的共享变量存储在主内存（main memory）中，每个线程都有一个私有的本地内存（local memory），本地内存中存储了该线程以读/写共享变量的副本。
+本地内存是JMM（Java内存模型）的一个抽象概念，并不真实存在。它涵盖了缓存，写 缓冲区，寄存器以及其 他的硬件和编译器优化。">
+<meta name="twitter:image" content="https://cloud.githubusercontent.com/assets/9150767/13448138/81f142d6-e05b-11e5-8534-c2f383b5497d.pnghttps://cloud.githubusercontent.com/assets/9150767/13448138/81f142d6-e05b-11e5-8534-c2f383b5497d.png">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -293,6 +298,10 @@
         
 
         
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+    </div>
+
         <div class="clearfix"></div>
       </div>
       
@@ -300,26 +309,17 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p><em>线程之间的共享变量存储在主内存（main memory）中，每个线程都有一个私有的本地内存（local memory），本地内存中存储了该线程以读/写共享变量的副本。</em><br><a id="more"></a></p>
-<h3 id="Java-内存模型"><a href="#Java-内存模型" class="headerlink" title="Java 内存模型"></a>Java 内存模型</h3><p><em>线程之间的共享变量存储在主内存（main memory）中，每个线程都有一个私有的本地内存（local memory），本地内存中存储了该线程以读/写共享变量的副本。</em></p>
-<p>本地内存是JMM（Java内存模型）的一个抽象概念，并不真实存在。它涵盖了缓存，写 缓冲区，寄存器以及其 他的硬件和编译器优化。Java内存模型的抽象示意图如下图：<br>![]（<a href="https://cloud.githubusercontent.com/assets/9150767/13448138/81f142d6-e05b-11e5-8534-c2f383b5497d.png）" target="_blank" rel="external">https://cloud.githubusercontent.com/assets/9150767/13448138/81f142d6-e05b-11e5-8534-c2f383b5497d.png）</a></p>
+        <h3 id="Java-内存模型"><a href="#Java-内存模型" class="headerlink" title="Java 内存模型"></a>Java 内存模型</h3><p><em>线程之间的共享变量存储在主内存（main memory）中，每个线程都有一个私有的本地内存（local memory），本地内存中存储了该线程以读/写共享变量的副本。</em></p>
+<p>本地内存是JMM（Java内存模型）的一个抽象概念，并不真实存在。它涵盖了缓存，写 缓冲区，寄存器以及其 他的硬件和编译器优化。<a id="more"></a><br>Java内存模型的抽象示意图如下图：<br><img src="https://cloud.githubusercontent.com/assets/9150767/13448138/81f142d6-e05b-11e5-8534-c2f383b5497d.pnghttps://cloud.githubusercontent.com/assets/9150767/13448138/81f142d6-e05b-11e5-8534-c2f383b5497d.png" alt=""></p>
 <h3 id="i-操作实质"><a href="#i-操作实质" class="headerlink" title="i++操作实质"></a>i++操作实质</h3><p>对于一个简单的 i＋＋ 操作，结合上图1 ，会发生如下的步骤：</p>
-<pre><code>**read：作用于主内存中，把主内存中一个变量的值传输到 工作内存 中。
-**load：作用于工作内存，把从read 操作从主内存中得到的值放入到工作内存的副本中。
-**use：把工作内存中的该副本值传递给执行引擎（也就是操作数栈中）。
-**assign：作用于工作内存，把执行引擎执行后的新值传递给该工作内存的变量。
-**store：作用于工作内存，把工作内存中该变量的值传送到 主内存中去。
-**write：作用于主内存的变量，把store 操作 得到的值写入到 主内存的该变量中。
+<pre><code>read：作用于主内存中，把主内存中一个变量的值传输到 工作内存 中。
+load：作用于工作内存，把从read 操作从主内存中得到的值放入到工作内存的副本中。
+use：把工作内存中的该副本值传递给执行引擎（也就是操作数栈中）。
+assign：作用于工作内存，把执行引擎执行后的新值传递给该工作内存的变量。
+store：作用于工作内存，把工作内存中该变量的值传送到 主内存中去。
+write：作用于主内存的变量，把store 操作 得到的值写入到 主内存的该变量中。
 所以说，一个 i++操作并不是原子性的。这上述的这些步骤中，可能会有其他线程对主内存的变量进行操作，从而导致出现多线程问题。
 </code></pre><p>###写在最后<br>    写出来，说出来才知道对不对，知道不对才能改正，改正了才能成长。<br>    在技术方面，希望大家眼里都容不得沙子。如果有不对的地方或者需要改进的地方希望可以指出，万分感谢。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
 
       
     </div> 
@@ -331,7 +331,7 @@
         <p><span>本文标题:</span><a href="/2016/12/14/多线程生成的原因（Java内存模型与i++操作解析）/">多线程生成的原因（Java内存模型与i++操作解析）</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Tayl0r。</a></p>
         <p><span>发布时间:</span>2016-12-14, 19:52:34</p>
-        <p><span>最后更新:</span>2016-12-21, 16:29:12</p>
+        <p><span>最后更新:</span>2016-12-21, 16:37:49</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2016/12/14/多线程生成的原因（Java内存模型与i++操作解析）/" title="多线程生成的原因（Java内存模型与i++操作解析）">http://Tayl00r.github.io/2016/12/14/多线程生成的原因（Java内存模型与i++操作解析）/</a>
             <span class="copy-path" data-clipboard-text="原文: http://Tayl00r.github.io/2016/12/14/多线程生成的原因（Java内存模型与i++操作解析）/　　作者: Tayl0r。" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -367,7 +367,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Java-内存模型"><span class="toc-number">1.</span> <span class="toc-text">Java 内存模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#i-操作实质"><span class="toc-number">2.</span> <span class="toc-text">i++操作实质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-number">3.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">4.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">5.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Java-内存模型"><span class="toc-number">1.</span> <span class="toc-text">Java 内存模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#i-操作实质"><span class="toc-number">2.</span> <span class="toc-text">i++操作实质</span></a></li></ol>
         
     </div>
     <style>
